@@ -1,0 +1,15 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %meta{name: "viewport",content: "width=device-width, initial-scale=1"}
+    %title Dumbfound
+    = csrf_meta_tags
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+  %body
+    .header_title.col-md-6.col-sm-12 DumbFound
+    .navlinks.col-md-3.col-sm-12
+      %span Register
+      %span Login
+    = yield

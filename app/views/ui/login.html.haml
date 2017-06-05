@@ -1,0 +1,17 @@
+%h4.form-title Login
+%br
+%form.login_user_form.col-md-10
+  .form-group.row
+    .col-form-label.col-md-2.pull-right
+      %label{for: "email_address"}email
+    .col-md-7
+      %input.form-control{type:"text", name: "email_address"}
+  .form-group.row
+    .col-form-label.col-md-2.pull-right
+      %label{for: "password"}password
+    .col-md-7
+      %input.form-control{type:"text", name: "password"}
+  .col-md-12.text-center.login-button
+    %button.btn-lg{type:"submit", class: "btn btn-success"}Login
+  .col-md-12.text-center.reset-link
+    %a.reset-pw{href: "#"} Reset your password

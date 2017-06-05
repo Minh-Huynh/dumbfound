@@ -1,0 +1,23 @@
+.register_user_form, .login_user_form {
+	margin: 0 auto;
+	width: 70%;
+	.col-form-label {
+		text-align: center;
+	}
+}
+.form-title {
+	font-size: 20px;
+	padding-left: 30px;
+	padding-top: 40px;
+	margin: 0 auto;
+	width: 80%;
+}
+
+.login-button{
+	padding: 30px 0px;
+}
+
+.reset-link {
+	padding: 10px 0;
+}
+
