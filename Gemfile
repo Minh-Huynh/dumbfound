@@ -27,10 +27,13 @@ gem 'jquery-rails'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.5'
-  gem 'factory_girl'
+  gem 'factory_girl_rails'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'capybara', '~> 2.13'
   gem 'selenium-webdriver'
+  gem 'faker'
+  gem 'rails-controller-testing'
+  gem 'shoulda'
 end
 
 group :development do
