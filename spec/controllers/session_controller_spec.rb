@@ -7,10 +7,22 @@ RSpec.describe SessionsController do
       post :create, params: {email: valid_user.email, password: "password"}
       expect(session[:current_user_id]).to eq(valid_user.id)
     end
-    it "redirects valid user to his profile page"
+    it "redirects valid user to his profile page" do
+      valid_user = create(:user, password: "password")
+      post :create, params: {email: valid_user.email, password: "password"}
+      expect(response).to redirect_to edit_user_path(valid_user)
+    end
   end
   context "invalid user" do
-    it "doesn't allow a user with wrong password in"
-    it "doesn't allow a user with wrong email/username in"
+    it "doesn't allow a user with wrong password in" do
+      valid_user = create(:user, password: "password")
+      post :create, params: {email: valid_user.email, password: "wrong_password"}
+      expect(session[:current_user_id]).to be_nil
+    end
+    it "doesn't allow a user with wrong email/username in" do
+      valid_user = create(:user, email: "minh@minh.com")
+      post :create, params: {email: "wrong@email.com", password: "password"}
+      expect(session[:current_user_id]).to be_nil
+    end
   end
 end
