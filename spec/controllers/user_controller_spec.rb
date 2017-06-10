@@ -4,13 +4,13 @@ RSpec.describe UsersController, type: :controller do
   describe "Users#create" do
     context "valid user" do
       it "creates a new user" do
-        valid_user = build(:user)
-        post :create, params: {user: valid_user.attributes}
+        valid_user = attributes_for(:user)
+        post :create, params: {user: valid_user}
         expect(User.count).to eq(1)
       end
       it "redirects user to profile page" do
-        valid_user = build(:user)
-        post :create, params: {user: valid_user.attributes}
+        valid_user = attributes_for(:user)
+        post :create, params: {user: valid_user}
         expect(response).to redirect_to edit_user_path(1)
       end
     end
