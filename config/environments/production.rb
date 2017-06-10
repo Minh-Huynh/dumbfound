@@ -1,8 +1,7 @@
 Rails.application.configure do
-  #To allow static assets on heroku
-  config.serve_static_assets = true
-  config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect'
+  # allow images to be served in production
   config.assets.compile=true
+  config.assets.digest = true
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
