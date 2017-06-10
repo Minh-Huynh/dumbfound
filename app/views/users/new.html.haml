@@ -1,27 +1,5 @@
-%h4.form-title register new user
-%br
-%form.register_user_form.col-md-10
-  .form-group.row
-    .col-form-label.col-md-2.pull-right
-      %label{for:"email_address"}email
-    .col-md-7
-      %input.form-control{type:"text", name:"email_address"}
-  .form-group.row
-    .col-form-label.col-md-2.pull-right
-      %label{for:"phone_number"}phone number
-    .col-md-7
-      %input.form-control{type:"text", name:"phone_number"}
-  .form-group.row
-    .col-form-label.col-md-2.pull-right
-      %label{for:"password"}password
-    .col-md-7
-      %input.form-control{type:"text", name:"password"}
-  .form-group.row
-    .col-form-label.col-md-2.pull-right
-      %label{for:"pw_confirmation"}password confirmation
-    .col-md-7
-      %input.form-control{type:"text", name:"pw_confirmation"}
-  .col-md-12.text-center.login-btn
-    %button.btn-lg.login-btn{type: "submit", class: "btn btn-primary"}register
-      
+.col-md-6.col-sm-12.offset-md-3
+  = render "shared/notice"
+  %h4.form-title Register New User 
+  = render "user_form",user: @user    
     

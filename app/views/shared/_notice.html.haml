@@ -1,0 +1,11 @@
+- if flash[:notice]
+  .alert.alert-success
+    =flash[:notice]
+- if flash[:error]
+  .alert.alert-danger
+    %strong
+      = flash[:error] 
+    %br
+    -obj.errors.full_messages.each do |msg|
+      = "\u2022" +  msg 
+      %br

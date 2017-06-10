@@ -10,6 +10,11 @@
   %body
     .header_title.col-md-6.col-sm-12 DumbFound
     .navlinks.col-md-3.col-sm-12
-      %span Register
-      %span Login
+      %span 
+        =link_to "Register",new_user_path 
+      %span
+        - if logged_in?
+          = link_to "Logout", session_path(id: current_user.id), method: "delete"
+        -else
+          = link_to "Login", new_session_path
     = yield

@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
+  before_action :admin_or_user_account, only: :edit
   def new
+    @user = User.new
   end
 
   def create
@@ -11,6 +13,10 @@ class UsersController < ApplicationController
       flash[:error] = "There were errors with your submission"
       render :new
     end
+  end
+
+  def edit
+    @user = User.find(params[:id])
   end
 
   def update
@@ -26,6 +32,13 @@ class UsersController < ApplicationController
 
   private
   def user_params
-    params.require(:user).permit(:email, :password_digest, :phone_number)
+    params.require(:user).permit(:email, :password, :phone_number, :password_confirmation)
+  end
+
+  def admin_or_user_account
+    unless params[:id].to_i == current_user.id
+      flash[:error] = "You can only edit your own profile"
+      redirect_to edit_user_path(current_user)
+    end
   end
 end
