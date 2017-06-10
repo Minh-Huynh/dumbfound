@@ -36,9 +36,9 @@ class UsersController < ApplicationController
   end
 
   def admin_or_user_account
-    unless params[:id].to_i == current_user.id
+    unless  logged_in? && params[:id].to_i == current_user.id
       flash[:error] = "You can only edit your own profile"
-      redirect_to edit_user_path(current_user)
+      redirect_to root_path
     end
   end
 end

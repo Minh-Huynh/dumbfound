@@ -11,7 +11,7 @@ RSpec.describe UsersController, type: :controller do
       it "redirects user to profile page" do
         valid_user = attributes_for(:user)
         post :create, params: {user: valid_user}
-        expect(response).to redirect_to edit_user_path(1)
+        expect(response).to redirect_to edit_user_path(User.last.id)
       end
     end
     context "invalid user" do
@@ -42,7 +42,7 @@ RSpec.describe UsersController, type: :controller do
       it "redirects user to profile page" do
         user = create(:user)
         patch :update, params: {id: user.id, user: {email: "fictitious_email@email.com"}}
-        expect(response).to redirect_to edit_user_path(1)
+        expect(response).to redirect_to edit_user_path(User.last.id)
       end
     end
     context "invalid update" do
