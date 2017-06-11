@@ -7,6 +7,7 @@ class UsersController < ApplicationController
   def create
     @user = User.create(user_params)
     if @user.save
+      WelcomeMailer.welcome_email(@user).deliver
       flash[:notice] = "You've created a new account. Check your email inbox for instructions!"
       redirect_to edit_user_path(@user)
     else

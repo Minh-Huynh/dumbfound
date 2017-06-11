@@ -1,4 +1,10 @@
 Rails.application.configure do
+  # Mailgun configurations
+  config.action_mailer.delivery_method = :mailgun
+  config.action_mailer.mailgun_settings = {
+    api_key: ENV['mailgun_secret_api_key'],
+    domain: ENV['domain']
+  }
   # allow images to be served in production
   config.assets.compile=true
   config.assets.digest = true

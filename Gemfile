@@ -20,6 +20,8 @@ gem 'haml-rails'
 gem 'bootstrap'
 gem 'jquery-rails'
 gem 'bootstrap_form'
+gem 'mailgun-ruby'
+gem 'figaro'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 
@@ -38,6 +40,7 @@ group :development, :test do
   gem 'faker'
   gem 'rails-controller-testing'
   gem 'shoulda'
+  gem 'letter_opener'
 end
 
 group :development do
