@@ -6,7 +6,6 @@
     %strong
       = flash[:error] 
     %br
-    - byebug
     -obj.errors.full_messages.each do |msg|
       = "\u2022" +  msg 
       %br
