@@ -3,31 +3,36 @@ require "rails_helper"
 RSpec.describe UsersController, type: :controller do
   describe "Users#create" do
     context "valid user" do
+      before do
+        @valid_user = attributes_for(:user)
+        post :create, params: {user: @valid_user}
+      end
       it "creates a new user" do
-        valid_user = attributes_for(:user)
-        post :create, params: {user: valid_user}
         expect(User.count).to eq(1)
       end
       it "redirects user to profile page" do
-        valid_user = attributes_for(:user)
-        post :create, params: {user: valid_user}
         expect(response).to redirect_to edit_user_path(User.last.id)
+      end
+      it "sends an email" do
+        expect(ActionMailer::Base.deliveries.count).to eq(1)
+      end
+
+      it "sends email to correct recipient" do
+        expect(ActionMailer::Base.deliveries.first.to.first).to eq(@valid_user[:email])
       end
     end
     context "invalid user" do
-      it "does not create an invalid user" do
+      before do
         invalid_user = build(:user, password: '', password_confirmation: '')
         post :create, params: {user: invalid_user.attributes}
+      end
+      it "does not create an invalid user" do
         expect(User.count).to eq(0)
       end
       it "re-renders create page" do
-        invalid_user = build(:user, password: '', password_confirmation: '')
-        post :create, params: {user: invalid_user.attributes}
         expect(response).to render_template(:new)
       end
       it "populates flash with errors" do
-        invalid_user = build(:user, password: '', password_confirmation: '')
-        post :create, params: {user: invalid_user.attributes}
         expect(controller).to set_flash[:error]
       end
     end
