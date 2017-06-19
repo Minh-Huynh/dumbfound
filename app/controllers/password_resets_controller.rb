@@ -17,5 +17,19 @@ class PasswordResetsController < ApplicationController
     end
   end
 
+  def edit
+    @token = params[:token]
+    user = User.find_by(reset_token: @token)
+    if user
+      render :edit
+    else
+      flash[:error] = "Not a valid token"
+      redirect_to root_path
+    end
+  end
+
+  def update
+  end
+
 
 end
