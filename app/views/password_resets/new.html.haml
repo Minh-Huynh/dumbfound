@@ -1,0 +1,4 @@
+.col-md-6.col-sm-10.offset-md-3
+  = bootstrap_form_tag(url: password_resets_path, inline_errors: false) do |f|
+    = f.email_field :email
+    = f.submit "Reset Password", class: "btn btn-primary"

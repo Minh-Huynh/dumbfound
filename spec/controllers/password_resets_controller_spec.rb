@@ -17,7 +17,27 @@ describe PasswordResetsController do
       post :create, params: {email: user.email}
       expect(ActionMailer::Base.deliveries.first.to.first).to eq(user.email)
     end
-    it "redirects user to sent email confirmation page"
+    it "redirects user to sent email confirmation page" do
+      user = create(:user)
+      post :create, params: {email: user.email}
+      expect(response).to redirect_to new_session_path
+    end
   end
-  context "invalid user account"
+  context "invalid user account" do
+    it "re-renders the page" do
+      user = build(:user)
+      post :create, params: {email: user.email}
+      expect(response).to  render_template :new
+    end
+    it "populates flash error message" do
+      user = build(:user)
+      post :create, params: {email: user.email}
+      expect(flash[:error]).not_to be_nil
+    end
+    it "doesn't send the reset email" do
+      user = build(:user)
+      post :create, params: {email: user.email}
+      expect(ActionMailer::Base.deliveries).to be_empty
+    end
+  end 
 end

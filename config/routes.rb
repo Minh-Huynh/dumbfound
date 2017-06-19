@@ -3,5 +3,5 @@ Rails.application.routes.draw do
   root to: 'pages#show'
   resources :users, except: [:destroy]
   resources :sessions, only: [:new, :create, :destroy]
-  resources :password_resets, only: [:new, :create]
+  resources :password_resets, only: [:new, :create, :edit, :update]
 end
