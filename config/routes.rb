@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   resources :sessions, only: [:new, :create, :destroy]
   resources :password_resets, only: [:new, :create]
   get 'password_resets/:token', as: "edit_password_reset", to: "password_resets#edit"
+  patch 'password_resets', as: "update_password_reset", to: "password_resets#update"
 end

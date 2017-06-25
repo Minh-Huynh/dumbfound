@@ -73,4 +73,36 @@ describe PasswordResetsController do
       end
     end
   end
+  describe "passwordrests#update" do
+    context "valid password change" do
+      it "changes user's password" do
+        user = create(:user)
+        new_password = "new_password"
+        patch :update, params: {password: new_password, password_confirmation: new_password }
+        expect(User.find(user.id).authenticate(new_password)).to eq(user)
+      end
+      it "redirects user to login page" do
+        user = create(:user)
+        new_password = "new_password"
+        patch :update, params: {password: new_password, password_confirmation: new_password }
+        expect(response).to redirect_to new_session_path
+      end
+    end
+    context "invalid password change" do
+      it "re-renders password change page" do
+        user = create(:user)
+        new_password = "new_password"
+        wrong_new_password = "wrong_new_password"
+        patch :update, params: {password: new_password, password_confirmation: wrong_new_password }
+        expect(response).to render_template :edit
+      end
+      it "populates flash message" do 
+        user = create(:user)
+        new_password = "new_password"
+        wrong_new_password = "wrong_new_password"
+        patch :update, params: {password: new_password, password_confirmation: wrong_new_password }
+        expect(flash[:error]).not_to be_nil
+      end
+    end
+  end
 end
