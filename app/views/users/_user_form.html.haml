@@ -1,6 +1,6 @@
 =bootstrap_form_for(user, inline_errors: false, label_col: "col-md-2", control_col: "col-md-6") do |f|
   =f.email_field :email
-  =f.phone_field :phone_number
+  =f.telephone_field :phone_number, type: "tel", class: "user_phone"
   =f.password_field :password
   =f.password_field :password_confirmation
   =f.submit user.new_record? ? "Submit" : "Update"
