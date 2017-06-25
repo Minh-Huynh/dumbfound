@@ -1,5 +1,5 @@
 .col-md-6.col-sm-12.offset-md-3
-  = render "shared/notice"
+  = render "shared/notice", obj: @user
   %h4.form-title Register New User 
   = render "user_form",user: @user    
     
