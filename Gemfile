@@ -24,6 +24,8 @@ gem 'mailgun-ruby'
 gem 'figaro'
 gem 'twilio-ruby'
 gem 'jquery_mask_rails'
+gem 'faraday'
+gem 'faraday_middleware'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 
