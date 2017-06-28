@@ -9,30 +9,21 @@ class MessagesController < ApplicationController
     if user
       received_msg = params[:Body]
       from, to = parse_incoming_message(received_msg)
-      msg = Direction.new(origin: from, destination: to, time: Time.now.getutc.to_i)
-      response = msg.make_request.join(" / ")
-      from_number = params["From"]
-      account_sid = ENV["twilio_sid"]
-      auth_token = ENV["twilio_token"]
-
-      @client = Twilio::REST::Client.new account_sid, auth_token
-      sms = @client.messages.create(
-        from: ENV["twilio_number"],
-        to: from_number,
-        body: response
-      )
+      directions = Direction.new
+      response = directions.make_request(origin: from, destination: to, time: Time.now.getutc.to_i)
+      if Direction.valid_request?(response)
+        Direction.process_and_format(response, 3).each do |steps|
+          Message.new.send_message(params[:From],steps.join(" "))
+        end
+      end
     end
   end
 
   private
   def parse_incoming_message(msg)
-    begin
-      locations = msg.split("to")
-      from = locations[0].gsub(/\s+/, "+")
-      to = locations[1].gsub(/\s+/, "+")
-      return from,to
-    rescue
-      false
-    end
+    locations = msg.split("to")
+    from = locations[0].gsub(/\s+/, "+").chomp("+")
+    to = locations[1].gsub(/\s+/, "+")
+    return from,to
   end
 end
