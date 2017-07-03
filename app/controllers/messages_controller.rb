@@ -2,7 +2,7 @@ class MessagesController < ApplicationController
   skip_before_action :verify_authenticity_token
   require 'faraday_middleware'
 
-  STEPS_PER_SMS_MSG = 3
+  STEPS_PER_SMS_MSG = 5
 
   def reply
     formatted_phone_number = params[:From].gsub /^\+1/,""
@@ -11,7 +11,7 @@ class MessagesController < ApplicationController
     
     if user && received_msg =~ / to /
       from, to, travel_mode = parse_incoming_message(received_msg)
-      directions = Direction.new(origin: from, destination: to, time: Time.now.getutc.to_i, travel_mode: travel_mode)
+      directions = Direction.new(origin: from, destination: to, time: Time.now.getutc.to_i + 100, travel_mode: travel_mode)
       directions.make_request
       if directions.valid_request?
         directions.process_and_format(STEPS_PER_SMS_MSG).each do |steps|
