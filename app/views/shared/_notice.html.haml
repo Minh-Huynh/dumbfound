@@ -6,6 +6,7 @@
     %strong
       = flash[:error] 
     %br
-    -obj.errors.full_messages.each do |msg|
-      = "\u2022" +  msg 
-      %br
+    -if obj && obj.errors
+      -obj.errors.full_messages.each do |msg|
+        = "\u2022" +  msg 
+        %br

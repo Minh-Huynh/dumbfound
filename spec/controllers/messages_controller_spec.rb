@@ -20,6 +20,18 @@ RSpec.describe MessagesController, type: :controller do
         expect_any_instance_of(Message).to receive(:send_message)
         post :reply, params: params
       end
+      it "doesn't allow a user to make more than a set number of requests a month" do
+        requests_per_month = 20
+        user.update(requests_this_month: requests_per_month)
+        expect_any_instance_of(Direction).not_to receive(:make_request)
+        post :reply, params: params
+      end
+      it "sends a message if user makes a single request over the limit" do
+        requests_per_month = 20
+        user.update(requests_this_month: requests_per_month)
+        expect_any_instance_of(Message).to receive(:send_message).with("+1" + user.phone_number, "You've exceeded the monthly limit of #{requests_per_month} direction requests this month")
+        post :reply, params: params
+      end
     end
     context "unregistered user" do
       let(:user) {build(:user)}
@@ -66,7 +78,7 @@ RSpec.describe MessagesController, type: :controller do
         Message.any_instance.stub(:send_message).and_return(true)
       end
       it "makes a google directions API request" do
-        Direction.should_receive(:new).with({:origin=>"From+San+Gabriel", :destination=>"Pasadena", :time=>Time.now.getutc.to_i, :travel_mode=>" walking"})
+        Direction.should_receive(:new).with({:origin=>"From+San+Gabriel", :destination=>"Pasadena", :time=>Time.now.getutc.to_i + 100, :travel_mode=>" walking"})
         post :reply, params: params
       end
     end
