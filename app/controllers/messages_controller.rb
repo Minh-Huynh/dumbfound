@@ -2,7 +2,7 @@ class MessagesController < ApplicationController
   skip_before_action :verify_authenticity_token
   require 'faraday_middleware'
 
-  STEPS_PER_SMS_MSG = 1
+  STEPS_PER_SMS_MSG = 20
   REQUEST_LIMIT = 20 
   def reply
     formatted_phone_number = params[:From].gsub /^\+1/,""
