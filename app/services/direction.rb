@@ -19,24 +19,36 @@ class Direction
     @response = connection.post(query_string)
   end 
 
-  def process_and_format(steps_per_chunk)
+  def process_and_format(steps_per_text_message)
     if @response
       directions = direction_steps.map.with_index do |step, index|
-        instructions = ActionController::Base.helpers.strip_tags(step["html_instructions"]).gsub /&amp;/, "&"
+        instructions = sanitize_url_encoding(step) 
         if step["travel_mode"] == "TRANSIT"
-          transit_details = step["transit_details"]
-          instructions << " Headsign: \"" + transit_details["headsign"] + "\"" if transit_details.has_key?("headsign")
-          instructions << " Line: " + transit_details["line"]["short_name"] if transit_details["line"].has_key?("short_name")
-          instructions << " (" + step["duration"]["text"] + ")" if step["distance"]
-          instructions << " Get off @ " + transit_details["arrival_stop"]["name"] if transit_details["arrival_stop"]
+          instructions << add_transit_details(step)
         else
           instructions << "(" + step["distance"]["text"] + ")" if step["distance"]
         end
         instructions.prepend(" \##{index + 1}: ")
       end
-      directions.in_groups_of(steps_per_chunk)
+      directions.in_groups_of(steps_per_text_message)
     end
   end
+
+  private
+  def sanitize_url_encoding(step)
+        ActionController::Base.helpers.strip_tags(step["html_instructions"]).gsub /&amp;/, "&"
+  end
+
+  def add_transit_details(step)
+    result_string = ""
+    transit_details = step["transit_details"]
+    result_string << " Headsign: \"" + transit_details["headsign"] + "\"" if transit_details.has_key?("headsign")
+    result_string << " Line: " + transit_details["line"]["short_name"] if transit_details["line"].has_key?("short_name")
+    result_string << " (" + step["duration"]["text"] + ")" if step["distance"]
+    result_string << " Get off @ " + transit_details["arrival_stop"]["name"] if transit_details["arrival_stop"]
+    result_string
+  end
+  
 
   def query_string
 		"json?origin=#{origin}&destination=#{destination}&departure_time=#{time}&traffic_model=#{traffic_model}&mode=#{travel_mode}&key=#{token}"
