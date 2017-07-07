@@ -7,10 +7,10 @@ RSpec.describe MessagesController, type: :controller do
       let(:params){{From: "+1" + user.phone_number, Body: "From San Gabriel to Pasadena"}}
       before do
         response = double("direction_response")
-        Direction.any_instance.stub(:make_request)
-        Direction.any_instance.stub(:valid_request?).and_return(true)
-        Direction.any_instance.stub(:process_and_format).and_return([[""]])
-        Message.any_instance.stub(:send_message).and_return(true)
+        allow_any_instance_of(Direction).to receive(:make_request)
+        allow_any_instance_of(Direction).to receive(:valid_request?).and_return(true)
+        allow_any_instance_of(Direction).to receive(:process_and_format).and_return([[""]])
+        allow_any_instance_of(Message).to receive(:send_message).and_return(true)
       end
       it "makes a google directions API request" do
         expect_any_instance_of(Direction).to receive(:make_request)
@@ -38,10 +38,10 @@ RSpec.describe MessagesController, type: :controller do
       let(:params){{From: "+1" + user.phone_number, Body: "From San Gabriel to Pasadena"}}
       before do
         response = double("direction_response")
-        Direction.any_instance.stub(:make_request)
-        Direction.any_instance.stub(:valid_request?).and_return(true)
-        Direction.any_instance.stub(:process_and_format).and_return([[""]])
-        Message.any_instance.stub(:send_message).and_return(true)
+        allow_any_instance_of(Direction).to receive(:make_request)
+        allow_any_instance_of(Direction).to receive(:valid_request?).and_return(true)
+        allow_any_instance_of(Direction).to receive(:process_and_format).and_return([[""]])
+        allow_any_instance_of(Message).to receive(:send_message).and_return(true)
       end
       it "doesn't make a google directions API request" do 
         expect_any_instance_of(Direction).not_to receive(:make_request)
@@ -57,9 +57,9 @@ RSpec.describe MessagesController, type: :controller do
       let(:params){{From: "+1" + user.phone_number, Body: "San Gabriel"}}
       before do
         response = double("direction_response")
-        Direction.any_instance.stub(:make_request)
-        Direction.any_instance.stub(:valid_request?).and_return(false)
-        Message.any_instance.stub(:send_message).and_return(true)
+        allow_any_instance_of(Direction).to receive(:make_request)
+        allow_any_instance_of(Direction).to receive(:valid_request?).and_return(false)
+        allow_any_instance_of(Message).to receive(:send_message).and_return(true)
       end
       it "sends the user text notification of invalid request" do
         expect_any_instance_of(Message).to receive(:send_message).with(params[:From], "Invalid Request: Please reformat to <origin> to <destination>")
@@ -68,18 +68,23 @@ RSpec.describe MessagesController, type: :controller do
     end
     context "with valid transit option" do
       let(:user) {create(:user)}
-      let(:params){{From: "+1" + user.phone_number, Body: "From San Gabriel to Pasadena by walking"}}
+      let(:params){{From: "+1" + user.phone_number, Body: "San Gabriel to Pasadena by walking"}}
       before do
         response = double("direction_response")
-        response.stub(:make_request)
-        response.stub(:valid_request?).and_return(true)
-        response.stub(:process_and_format).and_return([[""]])
-        direction_obj = Direction.stub(:new).and_return(response)
-        Message.any_instance.stub(:send_message).and_return(true)
+        allow(response).to receive(:make_request)
+        allow(response).to receive(:valid_request?).and_return(true)
+        allow(response).to receive(:process_and_format).and_return([[""]])
+        direction_obj = allow(Direction).to receive(:new).and_return(response)
+        allow_any_instance_of(Message).to receive(:send_message).and_return(true)
       end
       it "makes a google directions API request" do
-        Direction.should_receive(:new).with({:origin=>"From+San+Gabriel", :destination=>"Pasadena", :time=>Time.now.getutc.to_i + 100, :travel_mode=>" walking"})
+        expect(Direction).to receive(:new).with({:origin=>"San+Gabriel", :destination=>"Pasadena", :time=>Time.now.getutc.to_i + 100, :travel_mode=>"walking"})
         post :reply, params: params
+      end
+      it "makes a figures out transit options when synonyms are used" do
+        alt_params = {From: "+1" + user.phone_number, Body: "San Gabriel to Pasadena by foot"}
+        expect(Direction).to receive(:new).with({:origin=>"San+Gabriel", :destination=>"Pasadena", :time=>Time.now.getutc.to_i + 100, :travel_mode=>"walking"})
+        post :reply, params: alt_params
       end
     end
   end

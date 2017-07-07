@@ -28,8 +28,17 @@ class MessagesController < ApplicationController
 
   private
   def parse_incoming_message(msg)
-    locations = msg.split(/to | by/)
-    mode = locations.count == 3 ? locations[2] : nil
+    locations = msg.split(/to | by/).map{|x| x.strip}
+    entered_mode = locations.count == 3 ? locations[2] : nil
+    if ["bike","biking","bicycling"].include?(entered_mode)
+      mode = "bicycling"
+    elsif ["transit","bus","metro","subway"].include?(entered_mode)
+      mode = "transit"
+    elsif ["walking", "foot"].include?(entered_mode)
+      mode = "walking"
+    else
+      mode = "driving"
+    end
     from = locations[0].gsub(/\s+/, "+").chomp("+")
     to = locations[1].gsub(/\s+/, "+")
     return from,to, mode

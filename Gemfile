@@ -45,6 +45,7 @@ group :development, :test do
   gem 'rails-controller-testing'
   gem 'shoulda'
   gem 'letter_opener'
+  gem 'vcr'
 end
 
 group :development do

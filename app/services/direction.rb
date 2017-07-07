@@ -16,10 +16,7 @@ class Direction
       conn.response :json, :content_type => /\bjson$/
       conn.adapter Faraday.default_adapter
     end
-    @response = connection.post(query_string(origin: origin,
-                                             destination: destination,
-                                             time: time,
-                                             travel_mode: travel_mode))
+    @response = connection.post(query_string)
   end 
 
   def process_and_format(steps_per_chunk)
@@ -41,7 +38,7 @@ class Direction
     end
   end
 
-  def query_string(origin:, destination:,time:, travel_mode:)
+  def query_string
 		"json?origin=#{origin}&destination=#{destination}&departure_time=#{time}&traffic_model=#{traffic_model}&mode=#{travel_mode}&key=#{token}"
   end
 
