@@ -34,6 +34,10 @@ class Direction
     end
   end
 
+  def status_ok?
+    @response.body["status"] == "OK"
+  end
+  
   private
   def sanitize_url_encoding(step)
         ActionController::Base.helpers.strip_tags(step["html_instructions"]).gsub /&amp;/, "&"
@@ -60,9 +64,5 @@ class Direction
     rescue
       false
     end
-  end
-
-  def valid_request?
-    @response.body["status"] == "OK"
   end
 end
