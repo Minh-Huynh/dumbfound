@@ -27,6 +27,7 @@ gem 'jquery_mask_rails'
 gem 'faraday'
 gem 'faraday_middleware'
 gem 'jquery-turbolinks'
+gem 'tether-rails'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 
