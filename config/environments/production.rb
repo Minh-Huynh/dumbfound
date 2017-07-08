@@ -5,6 +5,10 @@ Rails.application.configure do
     api_key: ENV['mailgun_secret_api_key'],
     domain: ENV['mailgun_domain']
   }
+  # Safari mobile seems to cache the user creation page but nukes the session,
+  # creating a CSRF token validity error. Added this line to make it not cache
+  # the page
+	config.action_dispatch.default_headers.merge!('Cache-Control' => 'no-store, no-cache')
   # allow images to be served in production
   config.assets.compile=true
   config.assets.digest = true
