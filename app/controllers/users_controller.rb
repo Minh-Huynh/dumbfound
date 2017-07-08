@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :admin_or_user_account, only: :edit
+  before_action :admin_or_user_account, only:[:edit]
   def new
     @user = User.new
   end
@@ -9,6 +9,7 @@ class UsersController < ApplicationController
     if @user.save
       WelcomeMailer.welcome_email(@user).deliver
       flash[:notice] = "You've created a new account. Check your email inbox for instructions!"
+      login_user(@user.id)
       redirect_to edit_user_path(@user)
     else
       flash[:error] = "There were errors with your submission"
