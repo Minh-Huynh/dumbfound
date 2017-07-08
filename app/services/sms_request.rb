@@ -16,7 +16,7 @@ class SMSRequest
       directions.make_request
       if directions.status_ok?
 				directions.process_and_format(STEPS_PER_SMS_MSG).each do |steps|
-          Message.new.send_message(from,steps.join(" "))
+          Message.new.send_message("+1" + self.from,steps.join(" "))
           increment_user_request_counter
         end
       end
