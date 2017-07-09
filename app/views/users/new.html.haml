@@ -1,5 +1,7 @@
 .col-md-6.col-sm-12.offset-md-3
   = render "shared/notice", obj: @user
   %h4.form-title Register New User 
+  %br
+  %small*currently users are limited to 20 requests a month
   = render "user_form",user: @user    
     
