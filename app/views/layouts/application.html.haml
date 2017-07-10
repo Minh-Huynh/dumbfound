@@ -10,10 +10,12 @@
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
   %body
-    .header_title.col-md-6.col-sm-10 DumbFound
+    .header_title.col-md-4.col-sm-10 DumbFound
     .navlinks.col-md-3.col-sm-12
       %span 
         =link_to "Register",new_user_path 
+      %span 
+        =link_to "Instructions",instructions_path 
       %span
         - if logged_in?
           = link_to "Logout", session_path(id: current_user.id), method: "delete"

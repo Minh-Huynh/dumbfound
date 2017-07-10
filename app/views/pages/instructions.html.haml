@@ -1,0 +1,25 @@
+%h1.intro_statement Getting Started
+%br
+%p.text-center 1. Register your email and phone number at the register link above. You will receive an email with the phone number to which you will send your direction requests.
+%br
+%p.text-center 2. To make a request, send a text message in the format of:
+%p.text-center <strong> [origin] to [destination] by [travel mode]</strong>
+%br
+ 
+=image_tag(asset_path('direction_request_sms.png'), class:"text_phone", alt:"iphone texting screen with navigation request")
+%br
+
+%p.text-center Travel mode can be anything among transit/walking/bicycling/driving and their synonyms. Looking at the example above, we used "bus". Travel mode is completely optional and if you leave it out, it'll default to driving.
+%br
+
+=image_tag(asset_path('default_driving_sms.png'), class:"text_phone", alt:"iphone texting screen with navigation request")
+%br
+
+%p.text-center You <strong> MUST</strong> include the word "to" for the message to be properly processed. Otherwise, you will receive an error message.
+%br
+=image_tag(asset_path('error_to_sms.png'), class:"text_phone", alt:"iphone texting screen with navigation request")
+%br
+
+%p.text-center Currently, the limit is 20 requests a month, including ones resulting in error messages. If your locations cannot be found, you won't receive any result text at all.
+%br
+=image_tag(asset_path('error_limit_sms.png'), class:"text_phone", alt:"iphone texting screen with navigation request")
